@@ -1,0 +1,6 @@
+@KingdomDeathAPI_HostAddress = http://localhost:5020
+
+GET {{KingdomDeathAPI_HostAddress}}/api/Items
+Accept: application/json
+
+###

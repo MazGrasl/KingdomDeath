@@ -1,0 +1,27 @@
+<div fxLayout="row">
+    <div fxLayout="column" fxLayoutAlign="start start">
+        <form fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="1vh" [formGroup]="formGroup" (ngSubmit)="submit()">
+            <mat-form-field>
+                <mat-label>New Settlement</mat-label>
+                <input matInput formControlName="settlementName">
+            </mat-form-field>
+            <button type="submit" mat-mini-fab color="primary" fxFlexAlign="start" [disabled]="!formGroup.valid">
+                <mat-icon>
+                    add
+                </mat-icon>
+            </button>
+        </form>
+        <mat-list fxLayout="row wrap">
+            <mat-list-item>Existing settlements:</mat-list-item> 
+            <mat-list-item *ngFor="let settlement of (settlements$ | async)">
+                <button [class.selected]="selectedSettlement == settlement.id" mat-button (click)="selectSettlement(settlement.id)">{{settlement.name}}</button>
+                <button mat-icon-button aria-label="Delete settlement" (click)="removeSettlement(settlement.id)">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-list-item>
+        </mat-list>
+    </div>
+    <div *ngIf="selectedSettlement">
+        <app-settlement-details [id]="selectedSettlement"></app-settlement-details>
+    </div>
+</div>

@@ -1,0 +1,74 @@
+<ng-container *ngIf="(allGear$ | async) as allGear">
+    <ng-container *ngIf="(allResources$ | async) as allResources">
+        <div *ngIf="(settlement$ | async) as settlement">
+            <h3>{{settlement.name}}</h3>
+            <div fxLayout="row">
+                <div>
+                    <mat-list>
+                        <mat-list-item>Gear Storage:</mat-list-item>
+                        <mat-list-item *ngFor="let gear of settlement.gearStorage">{{gear.amount}}x {{gear.gearName}}</mat-list-item>
+                    </mat-list>
+                    <mat-list>
+                        <mat-list-item>Resource Storage:</mat-list-item>
+                        <mat-list-item *ngFor="let resource of settlement.resourceStorage">{{resource.amount}}x {{resource.resourceName}}</mat-list-item>
+                    </mat-list>
+                </div>
+                <div>
+                    <form [formGroup]="formGroupGear" fxLayout="row" fxLayoutGap="1vh">
+                        <mat-form-field>
+                            <mat-label>Amount</mat-label>
+                            <input matInput formControlName="amount">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Select gear</mat-label>
+                            <input matInput [matAutocomplete]="gearAutocomplete" formControlName="gearSelect" (input)="gearInputChanged($event)">
+                            <mat-autocomplete requireSelection autoActiveFirstOption #gearAutocomplete="matAutocomplete">
+                                <mat-option *ngFor="let gear of (gearAutocomplete$ | async)" [value]="gear.name">
+                                    {{ gear.name }}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        <button type="submit" mat-mini-fab color="primary" [disabled]="!formGroupGear.valid" (click)="addGear()">
+                            <mat-icon>
+                                add
+                            </mat-icon>
+                        </button>
+                        <button type="submit" mat-mini-fab color="warn" [disabled]="!formGroupGear.valid || !containsGear(settlement, formGroupGear.get('gearSelect')?.value)" (click)="removeGear()">
+                            <mat-icon>
+                                remove
+                            </mat-icon>
+                        </button>
+                    </form>
+                    <form [formGroup]="formGroupResource" fxLayout="row" fxLayoutGap="1vh">
+                        <mat-form-field>
+                            <mat-label>Amount</mat-label>
+                            <input matInput formControlName="amount">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Select resource</mat-label>
+                            <input matInput [matAutocomplete]="resourceAutocomplete" formControlName="resourceSelect" (input)="resourceInputChanged($event)">
+                            <mat-autocomplete requireSelection autoActiveFirstOption #resourceAutocomplete="matAutocomplete">
+                                <mat-option *ngFor="let resource of (resourceAutocomplete$ | async)" [value]="resource.name">
+                                    {{ resource.name }}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        <button type="submit" mat-mini-fab color="primary" [disabled]="!formGroupResource.valid" (click)="addResource()">
+                            <mat-icon>
+                                add
+                            </mat-icon>
+                        </button>
+                        <button type="submit" mat-mini-fab color="warn" [disabled]="!formGroupResource.valid || !containsResource(settlement, formGroupResource.get('resourceSelect')?.value)" (click)="removeResource()">
+                            <mat-icon>
+                                remove
+                            </mat-icon>
+                        </button>
+                    </form>
+                    <mat-list>
+                        <mat-list-item *ngFor="let gear of getCraftableGearList(settlement, allGear, allResources)">{{gear.name}}</mat-list-item>
+                    </mat-list>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</ng-container>

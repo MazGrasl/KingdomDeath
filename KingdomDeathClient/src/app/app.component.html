@@ -1,0 +1,16 @@
+<nav><mat-toolbar color="primary">
+  <span>
+    <mat-form-field>
+      <mat-label>Current Settlement</mat-label>
+      <mat-select matInput *ngIf="(currentSettlement$ | async) as currentSettlement" (selectionChange)="currentSettlementChanged($event)">
+        <mat-option *ngFor="let settlement of (settlements$ | async)" [attr.selected]="currentSettlement?.id == settlement.id" [value]="settlement.id">{{settlement.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <a mat-raised-button routerLink="itemlist" routerLinkActive="active" ariaCurrentWhenActive="page">Items</a>
+    <a mat-raised-button routerLink="costs" routerLinkActive="active" ariaCurrentWhenActive="page">Costs</a>
+    <a mat-raised-button routerLink="itemtags" routerLinkActive="active" ariaCurrentWhenActive="page">Item Tags</a>
+    <a mat-raised-button routerLink="settlements" routerLinkActive="active" ariaCurrentWhenActive="page">Settlements</a>
+  </span>
+</mat-toolbar></nav>
+
+<router-outlet></router-outlet>

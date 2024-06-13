@@ -1,0 +1,53 @@
+<form fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="1vh" [formGroup]="formGroup" (ngSubmit)="submit()">
+    <mat-form-field>
+        <mat-label>Gear</mat-label>
+        <input matInput formControlName="gearSelect" [matAutocomplete]="gearAutocomplete" (input)="gearInputChanged($event)">
+        <button *ngIf="formGroup.get('gearSelect')?.value.length > 0" matSuffix mat-icon-button aria-label="Clear" (click)="clearGearInput()">
+            <mat-icon>close</mat-icon>
+        </button>
+        <mat-autocomplete requireSelection autoActiveFirstOption #gearAutocomplete="matAutocomplete" (optionSelected)="gearSelectionChanged($event.option.value)">
+            <mat-option *ngFor="let gear of (gearAutocomplete$ | async)" [value]="gear.name">
+                {{ gear.name }}
+            </mat-option>
+        </mat-autocomplete>
+<!--        <mat-select formControlName="gearSelect" (selectionChange)="gearSelectionChanged()">
+            <mat-option *ngFor="let gear of (gearList$ | async)" [value]="gear.id">{{ gear.name }}</mat-option>
+        </mat-select> -->
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Amount</mat-label>
+        <input matInput formControlName="amount">
+    </mat-form-field>
+    <mat-radio-group color="primary" fxFlexAlign="start" aria-label="Select an option" formControlName="costType">
+        <mat-radio-button value="resource">Resource</mat-radio-button>
+        <mat-radio-button value="tag">Tag</mat-radio-button>
+    </mat-radio-group>
+    <mat-form-field *ngIf="formGroup.get('costType')?.value == 'resource'">
+        <mat-label>Resource</mat-label>
+        <input matInput formControlName="resource" [matAutocomplete]="resourceAutocomplete" (input)="resourceInputChanged($event)">
+        <mat-autocomplete requireSelection autoActiveFirstOption #resourceAutocomplete="matAutocomplete">
+            <mat-option *ngFor="let resource of (resourceAutocomplete$ | async)" [value]="resource.name">
+                {{ resource.name }}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field *ngIf="formGroup.get('costType')?.value == 'tag'">
+        <mat-label>Tag</mat-label>
+        <input matInput formControlName="tag" [matAutocomplete]="tagAutocomplete" (input)="tagInputChanged($event)">
+        <mat-autocomplete requireSelection autoActiveFirstOption #tagAutocomplete="matAutocomplete">
+            <mat-option *ngFor="let tag of (tagAutocomplete$ | async)" [value]="tag.name">
+                {{ tag.name }}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+    <button type="submit" mat-raised-button color="primary" fxFlexAlign="start" [disabled]="!formGroup.valid">Submit</button>
+</form>
+<mat-list *ngIf="(existingCosts$ | async) as existingCosts">
+    <mat-list-item *ngIf="existingCosts.length > 0">Existing costs:</mat-list-item> 
+    <mat-list-item *ngFor="let cost of existingCosts">
+        {{ cost.amount }} {{ cost.cost }}
+        <button mat-icon-button aria-label="Delete cost" (click)="removeCost(cost.id)">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-list-item>
+</mat-list>

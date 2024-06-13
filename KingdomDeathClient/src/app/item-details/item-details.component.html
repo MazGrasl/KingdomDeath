@@ -1,0 +1,22 @@
+<button backButton mat-button aria-label="Back Button">
+    <mat-icon>arrow_back</mat-icon>
+    <span>Back</span>
+</button>
+<mat-card *ngIf="item$ | async as item">
+    <mat-card-header>
+        <mat-card-title>{{ item.name }}</mat-card-title>
+        <mat-card-subtitle>
+            <span *ngFor="let tag of item.tags; let i=index">{{tag.name}}<span *ngIf="i != item.tags!.length - 1">, </span></span>
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        Expansion: {{ item.expansion }}<br>
+        Source: {{ item.category }}
+        <div *ngIf="(existingCosts$ | async) as costs">
+            <span *ngIf="costs.length > 0">Costs:</span>
+            <div *ngFor="let cost of costs">
+                {{cost.amount}}x {{ cost.cost }}
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

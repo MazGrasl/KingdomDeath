@@ -1,0 +1,86 @@
+<mat-tab-group [selectedIndex]="selectedTab$ | async" (selectedIndexChange)="setTabState($event)">
+    <mat-tab label="Gear">
+        <form fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="1vh" [formGroup]="formGroupGear" (ngSubmit)="submitGear()">
+            <mat-form-field>
+                <mat-label>Gear</mat-label>
+                <input matInput formControlName="gearSelect" [matAutocomplete]="gearAutocomplete" (input)="gearInputChanged($event)">
+                <button *ngIf="formGroupGear.get('gearSelect')?.value.length > 0" matSuffix mat-icon-button aria-label="Clear" (click)="clearGearInput()">
+                    <mat-icon>close</mat-icon>
+                </button>
+                <mat-autocomplete requireSelection autoActiveFirstOption #gearAutocomplete="matAutocomplete" (optionSelected)="gearSelectionChanged($event.option.value)">
+                    <mat-option *ngFor="let gear of (gearAutocomplete$ | async)" [value]="gear.name">
+                        {{ gear.name }}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Tag</mat-label>
+                <input matInput formControlName="tagSelect" [matAutocomplete]="tagAutocomplete" (input)="tagInputChanged($event)">
+                <button *ngIf="formGroupGear.get('tagSelect')?.value?.length > 0" matSuffix mat-icon-button aria-label="Clear" (click)="clearGearTagInput()">
+                    <mat-icon>close</mat-icon>
+                </button>
+                <mat-autocomplete requireSelection autoActiveFirstOption #tagAutocomplete="matAutocomplete">
+                    <mat-option *ngFor="let tag of (tagAutocomplete$ | async)" [value]="tag.name">
+                        {{ tag.name }}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            <button type="submit" mat-mini-fab color="primary" fxFlexAlign="start" [disabled]="!formGroupGear.valid">
+                <mat-icon>
+                    add
+                </mat-icon>
+            </button>
+        </form>
+        <mat-list *ngIf="(tagsForSelectedGear$ | async) as existingTags">
+            <mat-list-item *ngIf="existingTags.length > 0">Existing tags:</mat-list-item> 
+            <mat-list-item *ngFor="let tag of existingTags">
+                {{ tag?.name }}
+                <button mat-icon-button aria-label="Delete tag" (click)="removeGearTag(tag?.id)">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-list-item>
+        </mat-list>
+    </mat-tab>
+    <mat-tab label="Resources">
+        <form fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="1vh" [formGroup]="formGroupResource" (ngSubmit)="submitResource()">
+            <mat-form-field>
+                <mat-label>Resource</mat-label>
+                <input matInput formControlName="resourceSelect" [matAutocomplete]="resourceAutocomplete" (input)="resourceInputChanged($event)">
+                <button *ngIf="formGroupResource.get('resourceSelect')?.value.length > 0" matSuffix mat-icon-button aria-label="Clear" (click)="clearResourceInput()">
+                    <mat-icon>close</mat-icon>
+                </button>
+                <mat-autocomplete requireSelection autoActiveFirstOption #resourceAutocomplete="matAutocomplete" (optionSelected)="resourceSelectionChanged($event.option.value)">
+                    <mat-option *ngFor="let resource of (resourceAutocomplete$ | async)" [value]="resource.name">
+                        {{ resource.name }}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Tag</mat-label>
+                <input matInput formControlName="tagSelect" [matAutocomplete]="tagAutocomplete" (input)="tagInputChanged($event)">
+                <button *ngIf="formGroupResource.get('tagSelect')?.value?.length > 0" matSuffix mat-icon-button aria-label="Clear" (click)="clearResourceTagInput()">
+                    <mat-icon>close</mat-icon>
+                </button>
+                <mat-autocomplete requireSelection autoActiveFirstOption #tagAutocomplete="matAutocomplete">
+                    <mat-option *ngFor="let tag of (tagAutocomplete$ | async)" [value]="tag.name">
+                        {{ tag.name }}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            <button type="submit" mat-mini-fab color="primary" fxFlexAlign="start" [disabled]="!formGroupResource.valid">
+                <mat-icon>
+                    add
+                </mat-icon>
+            </button>
+        </form>
+        <mat-list *ngIf="(tagsForSelectedResource$ | async) as existingTags">
+            <mat-list-item *ngIf="existingTags.length > 0">Existing tags:</mat-list-item> 
+            <mat-list-item *ngFor="let tag of existingTags">
+                {{ tag?.name }}
+                <button mat-icon-button aria-label="Delete tag" (click)="removeResourceTag(tag?.id)">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-list-item>
+        </mat-list>
+    </mat-tab>
+</mat-tab-group>
