@@ -15,10 +15,11 @@ If you don't have dotnet ef installed already:
 * run "dotnet ef database update"
 * run "npm i KingdomDeathClient"
 
-## Run
+## Run in debug
 * run "dotnet watch KingdomDeathAPI"
 * run "npm start KingdomDeathClient"
 * Open browser to "http://localhost:4200"
+* (Optional) open browser to "http://localhost:5020/swagger" to see API endpoints
 
 # Tech stack
 ## Backend/API:
