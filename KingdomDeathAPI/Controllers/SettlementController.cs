@@ -69,7 +69,11 @@ public class SettlementController : ControllerBase {
 
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteSettlement(int id) {
-        _context.Remove(id);
+        var item = await _context.Settlements.FindAsync(id);
+        if (item == null) {
+            return NotFound();
+        }
+        _context.Settlements.Remove(item);
         await _context.SaveChangesAsync();
         return NoContent();
     }
