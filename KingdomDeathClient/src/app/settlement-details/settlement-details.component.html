@@ -5,12 +5,8 @@
             <div fxLayout="row">
                 <div>
                     <mat-list>
-                        <mat-list-item>Gear Storage:</mat-list-item>
+                        <mat-list-item><span  class="subtitle">Gear Storage:</span></mat-list-item>
                         <mat-list-item *ngFor="let gear of settlement.gearStorage">{{gear.amount}}x {{gear.gearName}}</mat-list-item>
-                    </mat-list>
-                    <mat-list>
-                        <mat-list-item>Resource Storage:</mat-list-item>
-                        <mat-list-item *ngFor="let resource of settlement.resourceStorage">{{resource.amount}}x {{resource.resourceName}}</mat-list-item>
                     </mat-list>
                 </div>
                 <div>
@@ -65,7 +61,14 @@
                         </button>
                     </form>
                     <mat-list>
+                        <mat-list-item><span  class="subtitle">Craftable gear:</span></mat-list-item>
                         <mat-list-item *ngFor="let gear of getCraftableGearList(settlement, allGear, allResources)">{{gear.name}}</mat-list-item>
+                    </mat-list>
+                </div>
+                <div>
+                    <mat-list>
+                        <mat-list-item><span  class="subtitle">Resource Storage:</span></mat-list-item>
+                        <mat-list-item *ngFor="let resource of settlement.resourceStorage">{{resource.amount}}x {{resource.resourceName}}</mat-list-item>
                     </mat-list>
                 </div>
             </div>
